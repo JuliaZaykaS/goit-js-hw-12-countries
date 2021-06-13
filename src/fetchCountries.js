@@ -1,1 +1,1 @@
-export default fetchCountries(searchQuery)
+// export default fetchCountries(searchQuery)
