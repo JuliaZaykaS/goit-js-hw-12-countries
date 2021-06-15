@@ -3,61 +3,46 @@ import '@pnotify/core/dist/BrightTheme.css';
 const { defaults } = require('@pnotify/core');
 const { error} = require('@pnotify/core');
 
+import css from './css/style.css';
 import countryCard from './template/country-card.hbs';
 import countryList from './template/country-list.hbs';
 import API from './fetchCountries.js';
-
-// const fetchData = fetchCountries();
 
 
 const refs = {
     inputEl: document.querySelector('.search-input'),
     divOneCountryEl: document.querySelector('.single-country'),
     divListEl: document.querySelector('.country-list'),
-    // divBoxEl: document.querySelector('.searching-countries')
 };
 
-refs.inputEl.addEventListener('input', debounce(onInputChange, 1500));
+refs.inputEl.addEventListener('input', debounce(onInputChange, 500));
+
+clearMarkup();
 
 function onInputChange(e) {
-    clearMarkup();
-    console.log(123);
-    const inputValue = e.target.value;
-    console.log(inputValue);
-    if (!inputValue) return;
-    const data = API.fetchCountries(inputValue);
-    console.log(data);
-    // if (data.length > 2){console.log('many');}
-    data.then(result => {
-        if (result.length > 10) {
-            alert();
-        } else if (result.length > 2 && result.length <= 10) {
-            const arrayOfCountries = result;
-            // const arrayOfCountries = JSON.stringify(result);
-            // console.log(JSON.parse(arrayOfCountries));
-            getMarkupListOfCountries(arrayOfCountries);
-            // getMarkupListOfCountries(JSON.parse(arrayOfCountries));
-        } else {getMarkupOfSingleCountry(result)}
-    })
 
+    if (!e.target.value) return;
 
+    const data = API.fetchCountries(e.target.value);
 
+    data.then(result => renderMarkup(result))
+        .catch(err=>onFetchError(err))
+        .finally(() => refs.inputEl.value ='')
 }
 
 function getMarkupOfSingleCountry(country) {
     const countryMarkup = countryCard(country);
-    console.log(countryMarkup);
+
     refs.divOneCountryEl.insertAdjacentHTML('afterbegin', countryMarkup);
 };
 
 function getMarkupListOfCountries(countries) {
     const listMarkup = countryList(countries);
-    // console.log();
     refs.divListEl.insertAdjacentHTML('afterbegin', listMarkup);
 
 }
 
-function alert() {
+function alertError() {
     const myError = error({
         text: "Too many matches found. Please enter a more specific query!"
     });
@@ -67,12 +52,22 @@ function alert() {
 function clearMarkup() {
     refs.divListEl.innerHTML='';
     refs.divOneCountryEl.innerHTML='';
+}
 
+function onFetchError(err) {
+    const myErrorSecond = error({
+        text: "No results were found for your request !!! Check the name is entered correctly!"
+    });
+    // alert("No results were found for your request !!! Check the name is entered correctly!")
 
 }
-// fetchData.then(getMarkupOfSingleCountry);
 
-// fetch('https://restcountries.eu/rest/v2/name/colombia')
-//     .then(r => r.json())
-//     .then(getMarkupOfSingleCountry)
 
+function renderMarkup(result) {
+if (result.length > 10) {
+            alertError();
+        } else if (result.length > 2 && result.length <= 10) {
+            const arrayOfCountries = result;
+            getMarkupListOfCountries(arrayOfCountries);
+        } else if (result.length === 1){getMarkupOfSingleCountry(result)}
+}
