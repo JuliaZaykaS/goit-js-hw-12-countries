@@ -65,3 +65,9 @@ ul.description {
 .info {
   margin-right: 50px;
 }
+
+.pnotify {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
