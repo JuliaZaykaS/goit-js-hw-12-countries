@@ -1,8 +1,3 @@
-// export default function fetchCountries() {
-//     fetch('https://restcountries.eu/rest/v2/name/colombia')
-//     .then(r => r.json())
-
-// }
 const BASE_URL = 'https://restcountries.eu/rest/v2/name/';
 
 function fetchCountries(searchQuery) {
