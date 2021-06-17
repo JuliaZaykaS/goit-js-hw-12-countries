@@ -71,3 +71,17 @@ ul.description {
   margin-right: auto;
   margin-top: 20px;
 }
+
+.clear-btn {
+  display: block;
+  width: 200px;
+  height: 50px;
+  background-color: beige;
+  border: 2px solid brown;
+  border-radius: 5px;
+  color: brown;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}

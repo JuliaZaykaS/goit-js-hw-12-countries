@@ -12,9 +12,11 @@ const refs = {
   inputEl: document.querySelector('.search-input'),
   divOneCountryEl: document.querySelector('.single-country'),
   divListEl: document.querySelector('.country-list'),
+  buttonEl: document.querySelector('.clear-btn'),
 };
 
 refs.inputEl.addEventListener('input', debounce(onInputChange, 500));
+refs.buttonEl.addEventListener('click', onBtnClick)
 
 function onInputChange(e) {
   clearMarkup();
@@ -29,7 +31,7 @@ function onInputChange(e) {
       return renderMarkup(result);
     })
     .catch(onFetchError)
-    .finally(() => (refs.inputEl.value = ''));
+
 }
 
 function getMarkupOfSingleCountry(country) {
@@ -52,6 +54,7 @@ function alertError() {
 function clearMarkup() {
   refs.divListEl.innerHTML = '';
   refs.divOneCountryEl.innerHTML = '';
+
 }
 
 function onFetchError() {
@@ -69,4 +72,10 @@ function renderMarkup(result) {
   } else if (result.length === 1) {
     getMarkupOfSingleCountry(result);
   }
+}
+
+function onBtnClick() {
+  refs.inputEl.value = '';
+  clearMarkup();
+
 }
