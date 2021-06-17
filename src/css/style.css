@@ -17,6 +17,9 @@ input {
   margin-right: auto;
   margin-bottom: 20px;
   font-size: 25px;
+  background-color: beige;
+  border: 2px solid brown;
+  border-radius: 5px;
 }
 
 label {
